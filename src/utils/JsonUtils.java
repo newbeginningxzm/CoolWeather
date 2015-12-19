@@ -17,7 +17,9 @@ public class JsonUtils {
 	private static ArrayList<String> location_known=new ArrayList<String>();
 	private static HashMap<String, String>location_id=new HashMap<String, String>();
 	public synchronized static boolean JsonToProvince(String data,CoolWeatherDB db){
-		if(data!=null&&"".equals(data)){
+		StringBuilder sb=new StringBuilder();
+
+		if(data!=null&&!"".equals(data)){
 			try{
 				JSONArray provinces=new JSONObject(data).getJSONArray("provinces");
 				for(int i=0;i<provinces.length();i++){
@@ -34,15 +36,16 @@ public class JsonUtils {
 		return false;
 	}
 	public synchronized static boolean JsonToCity(String data,CoolWeatherDB db){
-		if(data!=null){
+		if(data!=null&&!"".equals(data)){
 			try{
-				JSONArray citys=new JSONObject(data).getJSONArray("citys");
+				JSONArray citys=new JSONObject(data).getJSONArray("cities");
 				for(int i=0;i<citys.length();i++){
 					JSONObject obj=citys.getJSONObject(i);
-					City city=new City(obj.getString("province"), obj.getInt("province"), obj.getString("city"), obj.getInt("city_id"));
+					City city=new City(obj.getString("province"), obj.getInt("province_id"), obj.getString("city"), obj.getInt("city_id"));
 					if(db!=null)
 						db.saveCity(city);
 				}
+				return true;
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -52,13 +55,14 @@ public class JsonUtils {
 	public synchronized static boolean JsonToDistrict(String data,CoolWeatherDB db){
 		if(data!=null){
 			try{
-				JSONArray citys=new JSONObject(data).getJSONArray("districts");
-				for(int i=0;i<citys.length();i++){
-					JSONObject obj=citys.getJSONObject(i);
-					District district=new models.District(obj.getString("city"), obj.getInt("city_id"), obj.getString("district"), obj.getString("district_code"));
+				JSONArray districts=new JSONObject(data).getJSONArray("districts");
+				for(int i=0;i<districts.length();i++){
+					JSONObject obj=districts.getJSONObject(i);
+					District district=new District(obj.getString("city"), obj.getInt("city_id"), obj.getString("district"), obj.getString("district_code"));
 					if(db!=null)
 						db.saveDistrict(district);
 				}
+				return true;
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -99,9 +103,8 @@ public class JsonUtils {
 		if(data!=null){
 			int id=1;
 			try{
-				citys.append("{\"citys\":[");
+				citys.append("{\"cities\":[");
 				String provinces_data=getProvincesData(data);
-				List<String> location_known=new ArrayList<String>();
 				location_known.clear();
 				location_id.clear();
 				JSONArray provinces=new JSONObject(provinces_data).getJSONArray("provinces");
@@ -127,7 +130,6 @@ public class JsonUtils {
 				}
 				citys.deleteCharAt(citys.length()-1);
 				citys.append("]}");
-				return data;
 			}catch(Exception e){
 				
 			}
@@ -149,7 +151,7 @@ public class JsonUtils {
 					JSONObject obj=district.getJSONObject(i);
 					String city_name=obj.getString("city");
 					String district_name=obj.getString("district");
-					String district_code=obj.getString("id");
+					String district_code=obj.getString("district_code");
 					if(location_known.contains(district_name)){
 						continue;
 					}else{
@@ -167,6 +169,44 @@ public class JsonUtils {
 				districts.deleteCharAt(districts.length()-1);
 				districts.append("]}");
 			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return districts.toString();
+	}
+	public static String getDistrictsdataWitdID(String data,int cityid,String city){
+		StringBuilder districts=new StringBuilder();
+		if(data!=null){
+			try{
+				location_known.clear();
+				JSONArray district=new JSONObject(data).getJSONArray("result");
+				districts.append("{\"districts\":[");
+				for(int i=0;i<district.length();i++){
+					JSONObject obj=district.getJSONObject(i);
+					if(obj.getString("city").equalsIgnoreCase(city)){
+						String district_name=obj.getString("district");
+						String district_code=obj.getString("id");
+						String city_=obj.getString("city");
+						if(location_known.contains(district_name)){
+							continue;
+						}else{
+							location_known.add(district_name);
+							districts.append("{\"city\":");
+							districts.append("\"").append(city_).append("\",");
+							districts.append("\"city_id\":");
+							districts.append("\"").append(cityid).append("\",");
+							districts.append("\"district\":");
+							districts.append("\"").append(district_name).append("\",");
+							districts.append("\"district_code\":");
+							districts.append("\"").append(district_code).append("\"},");
+						}
+					}else{
+						continue;
+					}
+					}
+				districts.deleteCharAt(districts.length()-1);
+				districts.append("]}");
+				}catch(Exception e){
 				e.printStackTrace();
 			}
 		}

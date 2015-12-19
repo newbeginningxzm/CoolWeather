@@ -12,7 +12,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,10 +27,10 @@ public class MainActivity extends Activity {
 	private ArrayAdapter<String> adapter;
 	private TextView title;
 	private List<String> dataList=new ArrayList<String>();
-	private int current_level=0;
 	private final int PROVINCE_LEVEL=0;
 	private final int CITY_LEVEL=1;
 	private final int DISTRICT_LEVEL=2;
+	private int current_level=PROVINCE_LEVEL;
 	private CoolWeatherDB db;
 	private String source_data;
 	private List<Province>provinces=new ArrayList<Province>();
@@ -42,6 +45,32 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        title=(TextView)findViewById(R.id.title_text);
+        list=(ListView)findViewById(R.id.list_view);
+        db=CoolWeatherDB.getInstance(MainActivity.this);
+        adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, dataList);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				switch (current_level) {
+				case PROVINCE_LEVEL:
+					selected_province=provinces.get(position);
+					title.setText(selected_province.getProvince());
+					queryCity();
+					break;
+				case CITY_LEVEL:
+					selected_city=cities.get(position);
+					title.setText(selected_city.getCity());
+					queryDistrict();
+				default:
+					break;
+				}
+			}
+		});
+        queryProvinces();
     }
 
     @Override
@@ -66,8 +95,9 @@ public class MainActivity extends Activity {
     	String site="http://v.juhe.cn/weather/citys";
     	String key="16e31731cde49ba74c5b4888bae69120";
     	Map<String ,Object>params=new HashMap<String,Object>();
-    	if(source_data==null)
-    		showProgressDialog();
+    	params.put("key", key);
+    	if(source_data==null||"".equals(source_data))
+//    		showProgressDialog();
     		HttpUtilsWithListener.getData(site, params, "GET", new HttpCallbackListener() {
     	    	boolean result=false;
 				@Override
@@ -82,7 +112,8 @@ public class MainActivity extends Activity {
 						result=JsonUtils.JsonToCity(JsonUtils.getCitysData(source_data), db);
 						break;
 					case DISTRICT_LEVEL:
-						result=JsonUtils.JsonToDistrict(JsonUtils.getDistrictsdata(source_data), db);
+						final String districtData=JsonUtils.getDistrictsdataWitdID(source_data,selected_city.getCityid(),selected_city.getCity());
+						result=JsonUtils.JsonToDistrict(districtData, db);
 						break;
 					default:
 						break;
@@ -93,10 +124,10 @@ public class MainActivity extends Activity {
 							queryProvinces();
 							break;
 						case CITY_LEVEL:
-							result=JsonUtils.JsonToCity(JsonUtils.getCitysData(source_data), db);
+							queryCity();
 							break;
 						case DISTRICT_LEVEL:
-							result=JsonUtils.JsonToDistrict(JsonUtils.getDistrictsdata(source_data), db);
+							queryDistrict();
 							break;
 						default:
 							break;
@@ -115,19 +146,54 @@ public class MainActivity extends Activity {
 					});
 				}
 			});
+    	else{
+	    	boolean result=false;
+    		switch (type) {
+			case PROVINCE_LEVEL:
+				result=JsonUtils.JsonToProvince(JsonUtils.getProvincesData(source_data), db);
+				break;
+			case CITY_LEVEL:
+				result=JsonUtils.JsonToCity(JsonUtils.getCitysData(source_data), db);
+				break;
+			case DISTRICT_LEVEL:
+				final String Districtsdata=JsonUtils.getDistrictsdataWitdID(source_data,selected_city.getCityid(),selected_city.getCity());
+				result=JsonUtils.JsonToDistrict(Districtsdata, db);
+				final boolean r=result;
+				break;
+			default:
+				break;
+			}
+    		if(result){
+				switch (type) {
+				case PROVINCE_LEVEL:
+					queryProvinces();
+					break;
+				case CITY_LEVEL:
+					queryCity();
+					break;
+				case DISTRICT_LEVEL:
+					queryDistrict();
+					break;
+				default:
+					break;
+				}
+			}
+    	}
     }
     private void queryProvinces(){
     	provinces=db.getProvinces();
+    	title.setText("GET PROVINCE");
     	if(provinces.size()>0){
 			dataList.clear();
     		for(Province province:provinces){
     			dataList.add(province.getProvince());
     		}
-    		adapter.notifyDataSetInvalidated();
+    		adapter.notifyDataSetChanged();
     		list.setSelection(0);
     		title.setText("ÖÐ¹ú");
     		current_level=PROVINCE_LEVEL;
     	}else{
+        	title.setText("queryFromServer");
     		queryFromServer(PROVINCE_LEVEL);
     	}
     }
@@ -138,9 +204,15 @@ public class MainActivity extends Activity {
     		for(City city:cities){
     			dataList.add(city.getCity());
     		}
-    		adapter.notifyDataSetInvalidated();
-    		list.setSelection(0);
-    		title.setText(selected_province.getProvince());
+    		runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+		    		adapter.notifyDataSetChanged();
+		    		list.setSelection(0);
+		    		title.setText(selected_province.getProvince());
+				}
+			});
     		current_level=CITY_LEVEL;
     	}else{
     		queryFromServer(CITY_LEVEL);
@@ -148,14 +220,33 @@ public class MainActivity extends Activity {
     }
     private void queryDistrict(){
     	districts=db.getDistricts(selected_city.getCityid());
+    	final StringBuilder d=new StringBuilder();
     	if(districts.size()>0){
+//    		for(District district:districts){
+//			d.append(district.getCity()+":"+district.getCityid()+":"+district.getDistrit()+":"+district.getDistrictcode());
+//			d.append("\r\n");
+//		}
+    		dataList.clear();
     		for(District district:districts){
     			dataList.add(district.getDistrit());
     		}
-    		adapter.notifyDataSetInvalidated();
-    		list.setSelection(0);
-    		title.setText(selected_city.getCity());
+    		runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+//					if(dataList.size()>0)
+		    		adapter.notifyDataSetChanged();
+		    		list.setSelection(0);
+		    		title.setText(selected_city.getCity());				}
+			});
     		current_level=DISTRICT_LEVEL;
+//    		runOnUiThread(new Runnable() {
+//				@Override
+//				public void run() {
+//					title.setText(d.toString());
+//				}
+//			});
+//    		current_level=DISTRICT_LEVEL;
     	}else{
     		queryFromServer(DISTRICT_LEVEL);
     	}

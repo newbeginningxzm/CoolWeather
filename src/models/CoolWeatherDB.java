@@ -21,7 +21,7 @@ public class CoolWeatherDB {
 		CoolWeatherOpenHelper helper=new CoolWeatherOpenHelper(mContext, DB_NAME, null, VERSION);
 		db=helper.getWritableDatabase();
 	}
-	public synchronized CoolWeatherDB getInstance(Context context){
+	public static synchronized CoolWeatherDB getInstance(Context context){
 		if(coolweatherDB==null)
 		coolweatherDB=new CoolWeatherDB(context);
 		return coolweatherDB;
@@ -54,6 +54,7 @@ public class CoolWeatherDB {
 			item.put("province_id", city.getProvinceid());
 			item.put("city", city.getCity());
 			item.put("city_id", city.getCityid());	
+			db.insert(TABLE_CITY, null, item);
 		}
 	}
 	public List<City>getCitys(int province_id){
@@ -88,7 +89,7 @@ public class CoolWeatherDB {
 			do{
 				String city=cr.getString(cr.getColumnIndex("city"));
 				int city_id=cityid;
-				String district_=cr.getString(cr.getColumnIndex("district text"));
+				String district_=cr.getString(cr.getColumnIndex("district"));
 				String district_code=cr.getString(cr.getColumnIndex("district_code"));
 				District district=new District(city, city_id, district_, district_code);
 				districts.add(district);

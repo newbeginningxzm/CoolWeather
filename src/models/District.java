@@ -8,6 +8,8 @@ public class District {
 	public District(String city,int city_id,String district,String district_code){
 		this.city=city;
 		this.city_id=city_id;
+		this.district=district;
+		this.district_code=district_code;
 	}
 	public void setCity(String city){
 		this.city=city;
