@@ -9,6 +9,7 @@ import utils.JsonUtils;
 import models.*;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private TextView title;
+	private ProgressDialog progress;
 	private List<String> dataList=new ArrayList<String>();
 	private final int PROVINCE_LEVEL=0;
 	private final int CITY_LEVEL=1;
@@ -58,12 +60,10 @@ public class MainActivity extends Activity {
 				switch (current_level) {
 				case PROVINCE_LEVEL:
 					selected_province=provinces.get(position);
-					title.setText(selected_province.getProvince());
 					queryCity();
 					break;
 				case CITY_LEVEL:
 					selected_city=cities.get(position);
-					title.setText(selected_city.getCity());
 					queryDistrict();
 				default:
 					break;
@@ -96,8 +96,8 @@ public class MainActivity extends Activity {
     	String key="16e31731cde49ba74c5b4888bae69120";
     	Map<String ,Object>params=new HashMap<String,Object>();
     	params.put("key", key);
+		showProgressDialog();
     	if(source_data==null||"".equals(source_data))
-//    		showProgressDialog();
     		HttpUtilsWithListener.getData(site, params, "GET", new HttpCallbackListener() {
     	    	boolean result=false;
 				@Override
@@ -119,19 +119,26 @@ public class MainActivity extends Activity {
 						break;
 					}
 					if(result){
-						switch (type) {
-						case PROVINCE_LEVEL:
-							queryProvinces();
-							break;
-						case CITY_LEVEL:
-							queryCity();
-							break;
-						case DISTRICT_LEVEL:
-							queryDistrict();
-							break;
-						default:
-							break;
-						}
+						runOnUiThread(new Runnable() {
+							public void run() {
+								closeProgressDialog();
+								switch (type) {
+								case PROVINCE_LEVEL:
+									queryProvinces();
+									break;
+								case CITY_LEVEL:
+									queryCity();
+									
+									break;
+								case DISTRICT_LEVEL:
+									queryDistrict();
+									break;
+								default:
+									break;
+								}
+							}
+						});
+						
 					}
 				}
 				@Override
@@ -141,6 +148,7 @@ public class MainActivity extends Activity {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
+							closeProgressDialog();
 							Toast.makeText(MainActivity.this, "加载失败，请检查数据连接！", Toast.LENGTH_LONG).show();
 						}
 					});
@@ -148,6 +156,7 @@ public class MainActivity extends Activity {
 			});
     	else{
 	    	boolean result=false;
+	    	closeProgressDialog();
     		switch (type) {
 			case PROVINCE_LEVEL:
 				result=JsonUtils.JsonToProvince(JsonUtils.getProvincesData(source_data), db);
@@ -182,18 +191,21 @@ public class MainActivity extends Activity {
     }
     private void queryProvinces(){
     	provinces=db.getProvinces();
-    	title.setText("GET PROVINCE");
     	if(provinces.size()>0){
 			dataList.clear();
     		for(Province province:provinces){
     			dataList.add(province.getProvince());
     		}
-    		adapter.notifyDataSetChanged();
-    		list.setSelection(0);
-    		title.setText("中国");
+    		runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+		    		adapter.notifyDataSetChanged();
+		    		list.setSelection(0);
+		    		title.setText("中国");
+				}
+			});
     		current_level=PROVINCE_LEVEL;
     	}else{
-        	title.setText("queryFromServer");
     		queryFromServer(PROVINCE_LEVEL);
     	}
     }
@@ -252,6 +264,47 @@ public class MainActivity extends Activity {
     	}
     }
     private void showProgressDialog(){
+				if(progress==null){
+			    	progress=new ProgressDialog(this);
+					progress.setCanceledOnTouchOutside(false);
+			    	progress.setMessage("正在加载数据！");
+				}
+		    	progress.show();
     	
+    }
+    private void closeProgressDialog(){
+    	if(progress!=null&&progress.isShowing())
+    	progress.dismiss();
+    }
+    @Override
+    public void onBackPressed() {
+    	// TODO Auto-generated method stub
+    	switch (current_level) {
+		case PROVINCE_LEVEL:
+			finish();
+			break;
+		case CITY_LEVEL:
+//			if(provinces.size()>0){
+//				dataList.clear();
+//				for(Province province:provinces){
+//					dataList.add(province.getProvince());
+//				}
+//				adapter.notifyDataSetChanged();
+//			}else
+				queryProvinces();
+			break;
+		case DISTRICT_LEVEL:
+//			if(cities.size()>0){
+//				dataList.clear();
+//				for(City city:cities){
+//					dataList.add(city.getCity());
+//				}
+//				adapter.notifyDataSetChanged();
+//			}else
+				queryCity();
+			break;
+		default:
+			break;
+		}
     }
 }
