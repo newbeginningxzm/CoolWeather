@@ -10,6 +10,7 @@ import models.*;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
 	private Province selected_province;
 	private City selected_city;
 	private District selected_district;
+	boolean district_selected=false;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,17 @@ public class MainActivity extends Activity {
 				case CITY_LEVEL:
 					selected_city=cities.get(position);
 					queryDistrict();
+					break;
+				case DISTRICT_LEVEL:
+					selected_district=districts.get(position);
+					district_selected=true;
+					Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
+//					intent.putExtra("district_code", selected_district.getDistrictcode());
+//					intent.putExtra("district_name", selected_district.getDistrictcode());
+					intent.putExtra("selected_district", selected_district);
+					intent.putExtra("district_selected", district_selected);
+					startActivity(intent);
+					break;
 				default:
 					break;
 				}

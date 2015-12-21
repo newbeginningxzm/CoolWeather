@@ -11,6 +11,7 @@ import models.District;
 import models.Province;
 
 public class JsonUtils {
+	private static String WEATHER_SITE="http://v.juhe.cn/weather/index";
 	private static String site="http://v.juhe.cn/weather/citys";
 	private static final String key="16e31731cde49ba74c5b4888bae69120";
 	private static final String CHAR_SET="utf-8";
@@ -224,5 +225,44 @@ public class JsonUtils {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	public static Map<String,String> getWeatherData(String district_code){
+		Map<String,String> weather=new HashMap<String,String>();
+		try{
+			Map<String,Object> params=new HashMap<String,Object>();
+			params.put("cityname", district_code);
+			params.put("key", key);
+			String data=HttpUtils.getData(WEATHER_SITE, params, "GET");
+//			System.out.println(data);
+			JSONObject result=new JSONObject(data).getJSONObject("result");
+			JSONObject now=result.getJSONObject("sk");
+			JSONObject today=result.getJSONObject("today");
+			JSONArray future=result.getJSONArray("future");
+			JSONObject tomorrow=future.getJSONObject(0);
+			JSONObject dat=future.getJSONObject(1);
+			weather.put("now_temp", now.getString("temp"));
+			weather.put("now_wind_direction", now.getString("wind_direction"));
+			weather.put("now_wind_strength", now.getString("wind_strength"));
+			weather.put("now_humidity", now.getString("humidity"));
+			weather.put("refresh_time",now.getString("time"));
+			String temp=today.getString("temperature");
+			weather.put("today_hitemp",temp.split("~")[1]);
+			weather.put("today_lowtemp", temp.split("~")[0]);
+			weather.put("today_state",today.getString("weather"));
+			temp=tomorrow.getString("temperature");
+			weather.put("tomorrow_hitemp", temp.split("~")[1]);
+			weather.put("tomorrow_lowtemp", temp.split("~")[0]);
+			weather.put("tomorrow_state", tomorrow.getString("weather"));
+			weather.put("tomorrow_title", tomorrow.getString("week"));
+			temp=dat.getString("temperature");
+			weather.put("dat_hitemp", temp.split("~")[1]);
+			weather.put("dat_lowtemp", temp.split("~")[0]);
+			weather.put("dat_state", dat.getString("weather"));
+			weather.put("dat_title", dat.getString("week"));
+			return weather;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return weather;
 	}
 }
