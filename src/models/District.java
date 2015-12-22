@@ -28,7 +28,7 @@ public class District implements Serializable{
 	public void setDistrict(String district){
 		this.district=district;
 	}
-	public String getDistrit(){
+	public String getDistrict(){
 		return this.district;
 	}
 	public void setDistrictcode(String district_code){

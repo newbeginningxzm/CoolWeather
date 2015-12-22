@@ -33,7 +33,7 @@ public class HttpUtils {
                 conn.setDoOutput(true);
             }
 //            conn.setRequestProperty("User-agent", userAgent);
-//            conn.setUseCaches(false);
+            conn.setUseCaches(false);
             conn.setConnectTimeout(DEF_CONN_TIMEOUT);
             conn.setReadTimeout(DEF_READ_TIMEOUT);
             conn.setInstanceFollowRedirects(false);

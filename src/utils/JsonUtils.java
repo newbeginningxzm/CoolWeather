@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.json.JSONArray;
@@ -226,6 +227,21 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 	}
+	public static void main(String args[]){
+		System.out.println(getWeatherData("1"));
+	}
+	public static String getWeather(String district_code){
+		String data=null;
+		Map<String,Object> params=new HashMap<String,Object>();
+		params.put("cityname", district_code);
+		params.put("key", key);
+		try{
+			data=HttpUtils.getData(WEATHER_SITE, params, "GET");	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return data;
+	}
 	public static Map<String,String> getWeatherData(String district_code){
 		Map<String,String> weather=new HashMap<String,String>();
 		try{
@@ -233,31 +249,40 @@ public class JsonUtils {
 			params.put("cityname", district_code);
 			params.put("key", key);
 			String data=HttpUtils.getData(WEATHER_SITE, params, "GET");
-//			System.out.println(data);
+			System.out.println(data);
 			JSONObject result=new JSONObject(data).getJSONObject("result");
 			JSONObject now=result.getJSONObject("sk");
 			JSONObject today=result.getJSONObject("today");
-			JSONArray future=result.getJSONArray("future");
-			JSONObject tomorrow=future.getJSONObject(0);
-			JSONObject dat=future.getJSONObject(1);
-			weather.put("now_temp", now.getString("temp"));
+			JSONObject future=result.getJSONObject("future");
+			SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+			Date date=new Date();
+			Calendar cal=Calendar.getInstance();
+			cal.add(cal.DATE, 1);
+			date=cal.getTime();
+			String date_tomorrow="day_"+format.format(date);
+			cal.add(cal.DATE, 1);
+			date=cal.getTime();
+			String date_dat="day_"+format.format(date);
+			JSONObject tomorrow=future.getJSONObject(date_tomorrow);
+			JSONObject dat=future.getJSONObject(date_dat);
+			weather.put("now_temp", now.getString("temp")+"бу");
 			weather.put("now_wind_direction", now.getString("wind_direction"));
 			weather.put("now_wind_strength", now.getString("wind_strength"));
 			weather.put("now_humidity", now.getString("humidity"));
 			weather.put("refresh_time",now.getString("time"));
 			String temp=today.getString("temperature");
-			weather.put("today_hitemp",temp.split("~")[1]);
-			weather.put("today_lowtemp", temp.split("~")[0]);
-			weather.put("today_state",today.getString("weather"));
+			weather.put("today_hitemp",temp.split("~")[1]+"бу");
+			weather.put("today_lowtemp", temp.split("~")[0]+"бу");
+			weather.put("today_weather",today.getString("weather"));
 			temp=tomorrow.getString("temperature");
-			weather.put("tomorrow_hitemp", temp.split("~")[1]);
-			weather.put("tomorrow_lowtemp", temp.split("~")[0]);
-			weather.put("tomorrow_state", tomorrow.getString("weather"));
+			weather.put("tomorrow_hitemp", temp.split("~")[1]+"бу");
+			weather.put("tomorrow_lowtemp", temp.split("~")[0]+"бу");
+			weather.put("tomorrow_weather", tomorrow.getString("weather"));
 			weather.put("tomorrow_title", tomorrow.getString("week"));
 			temp=dat.getString("temperature");
-			weather.put("dat_hitemp", temp.split("~")[1]);
-			weather.put("dat_lowtemp", temp.split("~")[0]);
-			weather.put("dat_state", dat.getString("weather"));
+			weather.put("dat_hitemp", temp.split("~")[1]+"бу");
+			weather.put("dat_lowtemp", temp.split("~")[0]+"бу");
+			weather.put("dat_weather", dat.getString("weather"));
 			weather.put("dat_title", dat.getString("week"));
 			return weather;
 		}catch(Exception e){

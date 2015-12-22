@@ -177,7 +177,7 @@
            android:layout_alignParentLeft="true"
             />
         <TextView
-            android:id="@+id/today_state"
+            android:id="@+id/today_weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/today_lowtemp"
@@ -239,7 +239,7 @@
            android:layout_alignParentLeft="true"
             />
         <TextView
-            android:id="@+id/tomorrow_state"
+            android:id="@+id/tomorrow_weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tomorrow_lowtemp"
@@ -300,7 +300,7 @@
            android:layout_alignParentLeft="true"
             />
         <TextView
-            android:id="@+id/dat_state"
+            android:id="@+id/dat_weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/dat_lowtemp"

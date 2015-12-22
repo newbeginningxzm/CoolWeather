@@ -36,8 +36,8 @@ public final class R {
         public static final int dat_icon=0x7f08001d;
         public static final int dat_layout=0x7f080019;
         public static final int dat_lowtemp=0x7f08001c;
-        public static final int dat_state=0x7f08001e;
         public static final int dat_title=0x7f08001a;
+        public static final int dat_weather=0x7f08001e;
         public static final int district=0x7f080004;
         public static final int list_view=0x7f080002;
         public static final int now_humidity=0x7f08000c;
@@ -53,14 +53,14 @@ public final class R {
         public static final int today_icon=0x7f080011;
         public static final int today_layout=0x7f08000d;
         public static final int today_lowtemp=0x7f080010;
-        public static final int today_state=0x7f080012;
         public static final int today_title=0x7f08000e;
+        public static final int today_weather=0x7f080012;
         public static final int tomorrow_hitemp=0x7f080015;
         public static final int tomorrow_icon=0x7f080017;
         public static final int tomorrow_layout=0x7f080013;
         public static final int tomorrow_lowtemp=0x7f080016;
-        public static final int tomorrow_state=0x7f080018;
         public static final int tomorrow_title=0x7f080014;
+        public static final int tomorrow_weather=0x7f080018;
         public static final int weather_title=0x7f080005;
     }
     public static final class layout {

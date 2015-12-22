@@ -253,7 +253,7 @@ public class MainActivity extends Activity {
 //		}
     		dataList.clear();
     		for(District district:districts){
-    			dataList.add(district.getDistrit());
+    			dataList.add(district.getDistrict());
     		}
     		runOnUiThread(new Runnable() {
 				@Override
