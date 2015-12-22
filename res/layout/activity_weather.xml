@@ -11,7 +11,6 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_marginTop="140dp"
 	    android:textSize="45sp"
-	    android:text="北京"
         android:textColor="#FFFFFF"
         android:textStyle="bold"	    
 	    />
@@ -22,7 +21,6 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_below="@id/city"
 	    android:textSize="25sp"
-	    android:text="海淀"
         android:textColor="#FFFFFF"
         android:textStyle="bold"	    
 	    />
@@ -54,7 +52,6 @@
        android:textSize="16sp"
        android:textColor="#FFFFFF"
        android:textStyle="bold" 
-       android:text="23点21分更新"
        />
               <Button 
            android:id="@+id/refresh_weather"
@@ -70,7 +67,7 @@
            />
    </RelativeLayout> 
    <RelativeLayout 
-       android:id="@+id/now_weather"
+       android:id="@+id/now_weather_layout"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_marginTop="340dp"
@@ -82,16 +79,14 @@
            android:textColor="#FFFFFF"
            android:textStyle="bold"       	   
            android:textSize="65sp"
-           android:text="28°"
            />
        <TextView 
-           android:id="@id/now_weather"
+           android:id="@+id/now_weather"
            android:layout_width="wrap_content"
        	   android:layout_height="wrap_content"
            android:textSize="20sp"       	   
            android:textColor="#FFFFFF"
            android:textStyle="bold"
-           android:text="晴"
            android:layout_toRightOf="@id/now_temp"  
            android:layout_alignBottom="@id/now_temp"   
            android:layout_marginBottom="10dp"                  
@@ -103,7 +98,6 @@
            android:textSize="12sp"       	   
            android:textColor="#FFFFFF"
            android:textStyle="bold"
-           android:text="东风3级"
            android:layout_below="@id/now_weather"
            android:layout_alignParentLeft="true"
            />   
@@ -114,7 +108,6 @@
            android:textSize="12sp"       	   
            android:textColor="#FFFFFF"
            android:textStyle="bold"
-           android:text="湿度75%"
            android:layout_below="@id/now_weather"
            android:layout_alignRight="@id/now_weather"
            />     
@@ -122,7 +115,7 @@
    <LinearLayout 
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_below="@id/now_weather"
+       android:layout_below="@id/now_weather_layout"
        android:orientation="horizontal"
        android:layout_marginTop="20dp"
        >
@@ -153,7 +146,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24"
        	   android:gravity="center"
            />
                    />
@@ -167,7 +159,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24"
        	   android:gravity="center"
            />
         <ImageView 
@@ -185,7 +176,6 @@
             android:textStyle="bold" 
             android:textSize="16sp"      	   
        	    android:gravity="center"
-       	    android:text="晴转多云"            
             />
    </RelativeLayout> 
        <RelativeLayout 
@@ -202,7 +192,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="周四"
        	   android:gravity="center"
            />
         <TextView 
@@ -215,10 +204,8 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24"
        	   android:gravity="center"
            />
-                   />
         <TextView 
            android:id="@+id/tomorrow_lowtemp"
            android:layout_width="wrap_content"
@@ -229,7 +216,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24"
        	   android:gravity="center"
            />
         <ImageView 
@@ -247,7 +233,6 @@
             android:textStyle="bold" 
             android:textSize="16sp"      	   
        	    android:gravity="center"
-       	    android:text="晴转多云"            
             />
    </RelativeLayout> 
        <RelativeLayout 
@@ -264,7 +249,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="周五"
        	   android:gravity="center"
            />
         <TextView 
@@ -277,7 +261,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24°"
        	   android:gravity="center"
            />
         <TextView 
@@ -290,7 +273,6 @@
        	   android:textColor="#FFFFFF"
            android:textStyle="bold" 
            android:textSize="16sp"      	   
-       	   android:text="24"
        	   android:gravity="center"
            />
         <ImageView 
@@ -308,7 +290,6 @@
             android:textStyle="bold" 
             android:textSize="16sp"      	   
        	    android:gravity="center"
-       	    android:text="晴转多云"            
             />
    </RelativeLayout>    
    </LinearLayout>

@@ -11,7 +11,9 @@ import models.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,12 +45,16 @@ public class MainActivity extends Activity {
 	private City selected_city;
 	private District selected_district;
 	boolean district_selected=false;
+	private SharedPreferences pref;
+	private SharedPreferences.Editor editor;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        pref=PreferenceManager.getDefaultSharedPreferences(this);
+        editor=pref.edit();
         title=(TextView)findViewById(R.id.title_text);
         list=(ListView)findViewById(R.id.list_view);
         db=CoolWeatherDB.getInstance(MainActivity.this);

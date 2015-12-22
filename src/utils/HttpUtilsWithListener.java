@@ -11,18 +11,22 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class HttpUtilsWithListener {
 	 public static final String DEF_CHATSET = "UTF-8";
 	    public static final int DEF_CONN_TIMEOUT = 10000;
 	    public static final int DEF_READ_TIMEOUT = 10000;
 	    public static void getData(final String strUrl, final Map<String, Object> params,final String method,final HttpCallbackListener listener){
-	        new Thread(new Runnable() {
+
+	    	new Thread(new Runnable() {
 				@Override
 				public void run() {
 			    	HttpURLConnection conn = null;
 			    	BufferedReader reader = null;
 			        String rs = null;
 			        String site=null;
+				    String errcode=null;
 					// TODO Auto-generated method stub
 					 try {
 				            StringBuffer sb = new StringBuffer();
@@ -57,6 +61,12 @@ public class HttpUtilsWithListener {
 				            	listener.onFinish(rs);
 				        } catch (IOException e) {
 				            e.printStackTrace();
+				            try{
+				            	if(rs.toString()!=null)
+				            	errcode=new JSONObject(rs.toString()).getString("error_code");
+				            }catch(Exception ee){
+				            	ee.printStackTrace();
+				            }
 				            if(listener!=null)
 				            	listener.onError(e);
 				        } finally {

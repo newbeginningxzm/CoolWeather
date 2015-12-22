@@ -228,7 +228,6 @@ public class JsonUtils {
 		}
 	}
 	public static void main(String args[]){
-		System.out.println(getWeatherData("1"));
 	}
 	public static String getWeather(String district_code){
 		String data=null;
@@ -242,14 +241,9 @@ public class JsonUtils {
 		}
 		return data;
 	}
-	public static Map<String,String> getWeatherData(String district_code){
+	public static Map<String,String> getWeatherData(String data){
 		Map<String,String> weather=new HashMap<String,String>();
 		try{
-			Map<String,Object> params=new HashMap<String,Object>();
-			params.put("cityname", district_code);
-			params.put("key", key);
-			String data=HttpUtils.getData(WEATHER_SITE, params, "GET");
-			System.out.println(data);
 			JSONObject result=new JSONObject(data).getJSONObject("result");
 			JSONObject now=result.getJSONObject("sk");
 			JSONObject today=result.getJSONObject("today");
@@ -266,10 +260,12 @@ public class JsonUtils {
 			JSONObject tomorrow=future.getJSONObject(date_tomorrow);
 			JSONObject dat=future.getJSONObject(date_dat);
 			weather.put("now_temp", now.getString("temp")+"°");
-			weather.put("now_wind_direction", now.getString("wind_direction"));
-			weather.put("now_wind_strength", now.getString("wind_strength"));
-			weather.put("now_humidity", now.getString("humidity"));
-			weather.put("refresh_time",now.getString("time"));
+			weather.put("now_wind", now.getString("wind_direction")+now.getString("wind_strength"));
+			weather.put("now_humidity", "湿度"+now.getString("humidity"));
+//			weather.put("now_weather", today.getString("weather"));
+			String[] time=now.getString("time").split(":");
+			String refresh_time="今日"+time[0]+"时"+time[1]+"分更新";
+			weather.put("refresh_time",refresh_time);
 			String temp=today.getString("temperature");
 			weather.put("today_hitemp",temp.split("~")[1]+"°");
 			weather.put("today_lowtemp", temp.split("~")[0]+"°");
