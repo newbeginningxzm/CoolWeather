@@ -47,7 +47,7 @@ public final class R {
         public static final int now_wind=0x7f08000c;
         public static final int refresh_time=0x7f080007;
         public static final int refresh_weather=0x7f080008;
-        public static final int select_city=0x7f080006;
+        public static final int select_district=0x7f080006;
         public static final int title=0x7f080000;
         public static final int title_text=0x7f080001;
         public static final int today_hitemp=0x7f080010;

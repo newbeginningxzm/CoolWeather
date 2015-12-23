@@ -28,11 +28,10 @@
        android:id="@+id/weather_title"
        android:orientation="horizontal"
        android:layout_width="match_parent"
-       android:layout_height="40dp"
-       android:theme="@android:style/Theme.Translucent"
+       android:layout_height="wrap_content"
        >
        <Button 
-           android:id="@+id/select_city"
+           android:id="@+id/select_district"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:gravity="center"
@@ -47,11 +46,12 @@
        android:id="@+id/refresh_time"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_centerHorizontal="true"
+       android:layout_centerInParent="true"
        android:gravity="center"
        android:textSize="16sp"
        android:textColor="#FFFFFF"
        android:textStyle="bold" 
+       android:background="@android:color/transparent"
        />
               <Button 
            android:id="@+id/refresh_weather"
@@ -99,7 +99,7 @@
            android:textColor="#FFFFFF"
            android:textStyle="bold"
            android:layout_below="@id/now_weather"
-           android:layout_alignParentLeft="true"
+           android:layout_centerHorizontal="true"
            />   
            <TextView 
            android:id="@+id/now_humidity"
@@ -108,8 +108,8 @@
            android:textSize="12sp"       	   
            android:textColor="#FFFFFF"
            android:textStyle="bold"
-           android:layout_below="@id/now_weather"
-           android:layout_alignRight="@id/now_weather"
+           android:layout_below="@id/now_wind"
+           android:layout_centerHorizontal="true"
            />     
    </RelativeLayout>
    <LinearLayout 

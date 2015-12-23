@@ -2,9 +2,15 @@ package utils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.prefs.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 
 import models.City;
 import models.CoolWeatherDB;
@@ -285,5 +291,14 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return weather;
+	}
+	public static  void saveWeather(Map<String,String> weather,Context context){
+		SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(context).edit();
+		editor.putStringSet("weather_info", weather.keySet());
+		editor.putBoolean("weather_loaded", true);
+		for(String key:weather.keySet()){
+			editor.putString(key, weather.get(key));
+		}
+		editor.commit();
 	}
 }

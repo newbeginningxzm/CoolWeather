@@ -12,11 +12,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private TextView title;
@@ -54,12 +56,23 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         pref=PreferenceManager.getDefaultSharedPreferences(this);
-        editor=pref.edit();
-        title=(TextView)findViewById(R.id.title_text);
-        list=(ListView)findViewById(R.id.list_view);
-        db=CoolWeatherDB.getInstance(MainActivity.this);
-        adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, dataList);
-        list.setAdapter(adapter);
+    	boolean from_weather=getIntent().getBooleanExtra("from_weather", false);
+        if((!from_weather)&&pref.getBoolean("district_selected", false)){
+        	Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
+        	startActivity(intent);
+        	finish();
+        }else{
+        	editor=pref.edit();
+        	title=(TextView)findViewById(R.id.title_text);
+            list=(ListView)findViewById(R.id.list_view);
+            db=CoolWeatherDB.getInstance(MainActivity.this);
+            initList();
+            queryProvinces();
+        }
+    }
+    private void initList(){
+    	adapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, dataList);
+    	list.setAdapter(adapter);
         list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -76,12 +89,12 @@ public class MainActivity extends Activity {
 					break;
 				case DISTRICT_LEVEL:
 					selected_district=districts.get(position);
-					district_selected=true;
+					editor.putBoolean("district_selected", true);
+					editor.putString("city", selected_district.getCity());
+					editor.putString("district", selected_district.getDistrict());
+					editor.putString("district_code", selected_district.getDistrictcode());
+					editor.commit();
 					Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
-//					intent.putExtra("district_code", selected_district.getDistrictcode());
-//					intent.putExtra("district_name", selected_district.getDistrictcode());
-					intent.putExtra("selected_district", selected_district);
-					intent.putExtra("district_selected", district_selected);
 					startActivity(intent);
 					break;
 				default:
@@ -89,9 +102,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-        queryProvinces();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -300,7 +311,13 @@ public class MainActivity extends Activity {
     	// TODO Auto-generated method stub
     	switch (current_level) {
 		case PROVINCE_LEVEL:
-			finish();
+			boolean from_weather=getIntent().getBooleanExtra("from_weather", false);
+			if(from_weather){
+				Intent intent=new Intent(MainActivity.this,WeatherActivity.class);
+				startActivity(intent);
+				finish();
+			}else
+				finish();
 			break;
 		case CITY_LEVEL:
 //			if(provinces.size()>0){

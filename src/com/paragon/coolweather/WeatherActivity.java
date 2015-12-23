@@ -14,6 +14,7 @@ import utils.JsonUtils;
 import models.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,7 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements OnClickListener{
 	private String distirct_code;
 	private String district_name;
 	private TextView city;
@@ -47,7 +48,7 @@ public class WeatherActivity extends Activity {
 	private TextView dat_title;
 	private ProgressDialog progress;
 	private Button refresh;
-	private Button setDistricy;
+	private Button setDistrict;
 	private District selected_district;
 	private Map<String,String> weather;
 	private String test;
@@ -60,19 +61,36 @@ public class WeatherActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_weather);
 		setViews();
-		selected_district=(District)getIntent().getSerializableExtra("selected_district");
-		if(selected_district!=null){
+		if(pref.getBoolean("district_selected", false)){
+			selected_district=new District(pref.getString("city", ""),0, pref.getString("district", ""), pref.getString("district_code", ""));
 			city.setText(selected_district.getCity());
 			district.setText(selected_district.getDistrict());
 			refreshWeather(selected_district.getDistrict());
+		}else{
+			Intent intent=new Intent(WeatherActivity.this,MainActivity.class);
+			startActivity(intent);
+			finish();
 		}
-		refresh.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				refreshWeather(selected_district.getDistrict());
-			}
-		});
+		refresh.setOnClickListener(this);
+		setDistrict.setOnClickListener(this);
+	}
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.select_district:
+			Intent intent=new Intent(WeatherActivity.this,MainActivity.class);
+			intent.putExtra("from_weather", true);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.refresh_weather:
+			if(selected_district!=null)
+			refreshWeather(selected_district.getDistrictcode());
+			break;
+		default:
+			break;
+		}
 	}
 	private void refreshWeather(final String district_code){
 		String weather_site="http://v.juhe.cn/weather/index";
@@ -98,6 +116,8 @@ public class WeatherActivity extends Activity {
 				}else{
 					runOnUiThread(new Runnable() {
 						public void run() {
+							weather=loadWeather();
+							setWeather(weather);
 							closeProgressDialog();
 							Toast.makeText(WeatherActivity.this, "获取最新天气信息失败，请检查网络信息！", Toast.LENGTH_LONG).show();
 						}
@@ -122,6 +142,7 @@ public class WeatherActivity extends Activity {
 		pref=PreferenceManager.getDefaultSharedPreferences(this);
 		editor=pref.edit();
 		refresh=(Button)findViewById(R.id.refresh_weather);
+		setDistrict=(Button)findViewById(R.id.select_district);
 		city=(TextView)findViewById(R.id.city);
 		district=(TextView)findViewById(R.id.district);
 //		now_weather=(TextView)findViewById(R.id.now_weather);
