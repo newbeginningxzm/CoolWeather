@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.thinkland.sdk.android.DataCallBack;
+import com.thinkland.sdk.android.JuheData;
+import com.thinkland.sdk.android.JuheSDKInitializer;
+import com.thinkland.sdk.android.Parameters;
+
 import utils.HttpCallbackListener;
 import utils.HttpUtils;
 import utils.HttpUtilsWithListener;
@@ -61,6 +66,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_weather);
 		setViews();
+		JuheSDKInitializer.initialize(getApplicationContext());
 		if(pref.getBoolean("district_selected", false)){
 			selected_district=new District(pref.getString("city", ""),0, pref.getString("district", ""), pref.getString("district_code", ""));
 			city.setText(selected_district.getCity());
@@ -94,18 +100,16 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 	private void refreshWeather(final String district_code){
 		String weather_site="http://v.juhe.cn/weather/index";
-		String key="16e31731cde49ba74c5b4888bae69120";
-		Map<String,Object> params=new HashMap<String,Object>();
-		params.put("cityname", district_code);
-		params.put("key", key);
+		Parameters params=new Parameters();
+		params.add("cityname", district_code);
 		showProgressDialog();
-		HttpUtilsWithListener.getData(weather_site, params, "GET", new HttpCallbackListener() {
+		JuheData.executeWithAPI(this, 39, weather_site, JuheData.GET, params, new DataCallBack() {
 			@Override
-			public void onFinish(String response) {
+			public void onSuccess(int arg0, String arg1) {
 				// TODO Auto-generated method stub
-				String data=response;
+				String data=arg1;
 				if (data!=null){
-					final Map<String,String> weather=JsonUtils.getWeatherData(response);
+					final Map<String,String> weather=JsonUtils.getWeatherData(arg1);
 					saveWeather(weather);
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -124,9 +128,13 @@ public class WeatherActivity extends Activity implements OnClickListener{
 					});
 				}
 			}
-			
 			@Override
-			public void onError(Exception e) {
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void onFailure(int arg0, String arg1, Throwable arg2) {
 				// TODO Auto-generated method stub
 				runOnUiThread(new Runnable() {
 					public void run() {

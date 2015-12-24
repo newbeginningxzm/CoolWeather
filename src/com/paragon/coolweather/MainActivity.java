@@ -126,9 +126,7 @@ public class MainActivity extends Activity{
     }
     private void queryFromServer(final int type){
     	String site="http://v.juhe.cn/weather/citys";
-    	String key="16e31731cde49ba74c5b4888bae69120";
     	Parameters params=new Parameters();
-    	params.add("key", key);
 		showProgressDialog();
     	if(source_data==null||"".equals(source_data))
     		JuheData.executeWithAPI(MainActivity.this, 39, site, JuheData.GET, params, new DataCallBack() {
@@ -173,13 +171,6 @@ public class MainActivity extends Activity{
 						});
 					}
 				}
-				
-				@Override
-				public void onFinish() {
-					// TODO Auto-generated method stub
-					
-				}
-				
 				@Override
 				public void onFailure(int arg0, String arg1, Throwable arg2) {
 					// TODO Auto-generated method stub
@@ -191,6 +182,11 @@ public class MainActivity extends Activity{
 							Toast.makeText(MainActivity.this, "加载失败，请检查数据连接！", Toast.LENGTH_LONG).show();
 						}
 					});
+				}
+				@Override
+				public void onFinish() {
+					// TODO Auto-generated method stub
+					
 				}
 			});
     	else{

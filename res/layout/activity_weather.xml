@@ -76,6 +76,7 @@
            android:id="@+id/now_temp"
            android:layout_width="wrap_content"
        	   android:layout_height="wrap_content"
+       	   android:layout_centerHorizontal="true"
            android:textColor="#FFFFFF"
            android:textStyle="bold"       	   
            android:textSize="65sp"
