@@ -2,12 +2,15 @@ package com.paragon.coolweather;
 
 import java.util.*;
 
+import com.thinkland.sdk.android.DataCallBack;
+import com.thinkland.sdk.android.JuheData;
+import com.thinkland.sdk.android.JuheSDKInitializer;
+import com.thinkland.sdk.android.Parameters;
+
 import utils.HttpCallbackListener;
 import utils.HttpUtilsWithListener;
 import utils.JsonUtils;
-
 import models.*;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,7 +29,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 public class MainActivity extends Activity{
 	private ListView list;
@@ -62,6 +64,7 @@ public class MainActivity extends Activity{
         	startActivity(intent);
         	finish();
         }else{
+        	JuheSDKInitializer.initialize(getApplicationContext());
         	editor=pref.edit();
         	title=(TextView)findViewById(R.id.title_text);
             list=(ListView)findViewById(R.id.list_view);
@@ -124,16 +127,16 @@ public class MainActivity extends Activity{
     private void queryFromServer(final int type){
     	String site="http://v.juhe.cn/weather/citys";
     	String key="16e31731cde49ba74c5b4888bae69120";
-    	Map<String ,Object>params=new HashMap<String,Object>();
-    	params.put("key", key);
+    	Parameters params=new Parameters();
+    	params.add("key", key);
 		showProgressDialog();
     	if(source_data==null||"".equals(source_data))
-    		HttpUtilsWithListener.getData(site, params, "GET", new HttpCallbackListener() {
-    	    	boolean result=false;
+    		JuheData.executeWithAPI(MainActivity.this, 39, site, JuheData.GET, params, new DataCallBack() {
+    			boolean result=false;
 				@Override
-				public void onFinish(String response) {
+				public void onSuccess(int arg0, String arg1) {
 					// TODO Auto-generated method stub
-					source_data=response;
+					source_data=arg1;
 					switch (type) {
 					case PROVINCE_LEVEL:
 						result=JsonUtils.JsonToProvince(JsonUtils.getProvincesData(source_data), db);
@@ -168,11 +171,17 @@ public class MainActivity extends Activity{
 								}
 							}
 						});
-						
 					}
 				}
+				
 				@Override
-				public void onError(Exception e) {
+				public void onFinish() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onFailure(int arg0, String arg1, Throwable arg2) {
 					// TODO Auto-generated method stub
 					runOnUiThread(new Runnable() {
 						@Override
