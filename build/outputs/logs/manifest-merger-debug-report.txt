@@ -1,0 +1,85 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:2:1-43:12
+	package
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:3:5-38
+	android:versionName
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:5:5-30
+		INJECTED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml
+		INJECTED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml
+	android:versionCode
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:4:5-28
+		INJECTED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml
+		INJECTED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:2:11-69
+uses-sdk
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:9:9-38
+	android:minSdkVersion
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:8:9-35
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:10:2-72
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:10:19-69
+uses-permission#android.permission.INTERNET
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:11:2-64
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:11:19-61
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:12:2-76
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:12:19-73
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:13:2-73
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:13:19-70
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:14:2-78
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:14:19-75
+application
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:15:5-41:19
+	android:label
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:18:9-41
+	android:allowBackup
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:16:9-35
+	android:icon
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:17:9-45
+	android:theme
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:19:9-40
+meta-data#com.thinkland.juheapi.openid
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:20:9-22:62
+	android:value
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:22:9-59
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:21:3-46
+activity#com.paragon.coolweather.MainActivity
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:23:9-31:20
+	android:label
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:25:13-45
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:24:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:26:13-30:29
+action#android.intent.action.MAIN
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:27:17-69
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:27:25-66
+category#android.intent.category.LAUNCHER
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:29:17-77
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:29:27-74
+activity#com.paragon.coolweather.WeatherActivity
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:32:9-34:25
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:33:13-44
+service#service.AutoUpdateService
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:35:9-37:24
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:36:12-52
+receiver#service.AutoUpdateReceiver
+ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:38:9-40:25
+	android:name
+		ADDED from E:\LearningAndroid\CoolWeather\AndroidManifest.xml:39:13-54

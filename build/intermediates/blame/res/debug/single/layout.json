@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\layout\\activity_weather.xml",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\layout\\activity_weather.xml"
+    }
+]

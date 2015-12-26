@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\LearningAndroid\CoolWeather\libs"><file name="android-support-v4.jar" path="E:\LearningAndroid\CoolWeather\libs\android-support-v4.jar"/><file name="armeabi/libJuheSDK_v_1_2.so" path="E:\LearningAndroid\CoolWeather\libs\armeabi\libJuheSDK_v_1_2.so"/><file name="juhe_sdk_v_2_7.jar" path="E:\LearningAndroid\CoolWeather\libs\juhe_sdk_v_2_7.jar"/></source></dataSet><dataSet config="debug"><source path="E:\LearningAndroid\CoolWeather\build-types\debug\jniLibs"/></dataSet></merger>

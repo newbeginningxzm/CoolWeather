@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\title.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\title.png"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\back3.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\back3.png"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\aurora.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\aurora.png"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\state00.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\state00.png"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\LearningAndroid\\CoolWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\back.png",
+        "source": "E:\\LearningAndroid\\CoolWeather\\res\\drawable-hdpi\\back.png"
+    }
+]
